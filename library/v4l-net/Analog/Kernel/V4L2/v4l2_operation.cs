@@ -50,6 +50,8 @@ namespace Video4Linux.Analog.Kernel
 		SetFramebuffer        =  1076647435, // VIDIOC_S_FBUF
 		GetControl            = -1073195493, // VIDIOC_G_CTRL
 		SetControl            = -1073195492, // VIDIOC_S_CTRL
+		QueryControl          = -1073195484, // VIDIOC_QUERYCTRL
+		QueryMenu             = -1073195483, // VIDIOC_QUERYMENU
 		RequestBuffers        = -1072409080, // VIDIOC_REQBUFS
 		QueryBuffer           = -1069263351, // VIDIOC_QUERYBUF
 		StreamingOn           =  1074026002, // VIDIOC_STREAMON

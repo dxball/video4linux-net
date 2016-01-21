@@ -288,8 +288,9 @@ namespace Video4Linux.Analog
 		{
 			v4l2_control cur = new v4l2_control();
 			cur.id = (uint)ctrl;
-			if (ioControl.GetControl(ref cur) < 0)
-				throw new Exception("VIDIOC_G_CTRL");
+			int ret = ioControl.GetControl(ref cur);
+			if (ret < 0)
+				throw new Exception("VIDIOC_G_CTRL: " + ret.ToString());
 			
 			return cur.value;
 		}
@@ -299,8 +300,42 @@ namespace Video4Linux.Analog
 			v4l2_control cur = new v4l2_control();
 			cur.id = (uint)ctrl;
 			cur.value = value;
-			if (ioControl.SetControl(ref cur) < 0)
-				throw new Exception("VIDIOC_S_CTRL");
+			int ret = ioControl.SetControl(ref cur);
+			if(ret < 0)
+				throw new Exception("VIDIOC_S_CTRL: " + ret.ToString());
+		}
+
+		public DeviceControl QueryControl(Control ctrl) {
+			v4l2_queryctrl query = new v4l2_queryctrl();
+			query.id = (uint)ctrl;
+			int ret = ioControl.QueryControl(ref query);
+			if(ret < 0)
+				throw new Exception("VIDIOC_QUERYCTRL: " + ret.ToString());
+			DeviceControl control = new DeviceControl() {
+				Id = ctrl,
+				Name = query.name,
+				Min = query.minimum,
+				Max = query.maximum,
+				Step = query.step,
+				Default = query.step,
+				Type = query.type,
+				Flags = query.flags,
+			};
+			if(control.Type == v4l2_ctrl_type.Menu || control.Type == v4l2_ctrl_type.IntegerMenu) {
+				v4l2_querymenu qmenu = new v4l2_querymenu();          
+				qmenu.id = (uint)ctrl;
+				control.MenuItems = new List<Tuple<int, string>>();
+				for(int i = control.Min; i < control.Max; i++) {
+					qmenu.index = (uint)i;
+					if(ioControl.QueryMenu(ref qmenu) != 0) { continue; }
+					if(control.Type == v4l2_ctrl_type.Menu){
+						control.MenuItems.Add(new Tuple<int,string>(i, qmenu.name));
+					} else {
+						control.MenuItems.Add(new Tuple<int, string>(i, qmenu.value.ToString()));
+					}
+				}
+			}
+			return control;
 		}
 		
 		/// <summary>

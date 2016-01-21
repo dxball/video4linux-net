@@ -254,6 +254,22 @@ namespace Video4Linux.Core
 		{
 			return ioctl(deviceHandle, v4l2_operation.SetControl, ref control);
 		}
+
+		/// <summary>
+		/// Calls VIDIOC_QUERYCTRL
+		/// </summary>
+		public int QueryControl(ref v4l2_queryctrl control) 
+		{
+			return ioctl(deviceHandle, v4l2_operation.QueryControl, ref control);
+		}
+
+		/// <summary>
+		/// Calls VIDIOC_QUERYMENU
+		/// </summary>
+		public int QueryMenu(ref v4l2_querymenu menu) 
+		{
+			return ioctl(deviceHandle, v4l2_operation.QueryMenu, ref menu);
+		}
 		
 		public int GetAccessPriority(ref v4l2_priority priority)
 		{
@@ -362,6 +378,14 @@ namespace Video4Linux.Core
 		[DllImport("libc", SetLastError=true)]
 		private static extern int
 			ioctl(int device, v4l2_operation request, ref v4l2_control argp);
+
+		[DllImport("libc", SetLastError = true)]
+		private static extern int
+			ioctl(int device, v4l2_operation request, ref v4l2_queryctrl argp);
+
+		[DllImport("libc", SetLastError = true)]
+		private static extern int
+			ioctl(int device, v4l2_operation request, ref v4l2_querymenu argp);
 		
 		[DllImport("libc", SetLastError=true)]
 		private static extern int

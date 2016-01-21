@@ -20,11 +20,14 @@
 #endregion LICENSE
 
 using System;
+using System.Collections.Generic;
+using Video4Linux.Analog.Kernel;
 
 namespace Video4Linux.Analog
 {
 	public enum Control : uint
 	{
+		//User Control
 		Brightness       = 0x00980000 | 0x900 + 0,
 		Contrast         = 0x00980000 | 0x900 + 1,
 		Saturation       = 0x00980000 | 0x900 + 2,
@@ -69,5 +72,18 @@ namespace Video4Linux.Analog
 		ZoomContinuous       = 0x009a0000 | 0x900 + 15,
 		IrisAbsolute         = 0x009a0000 | 0x900 + 17,
 		IrisRelative         = 0x009a0000 | 0x900 + 18,
+	}
+
+	public class DeviceControl {
+		public Control Id;
+		public String Name;
+		public int Min;
+		public int Max;
+		public int Value;
+		public int Step;
+		public int Default;
+		public v4l2_ctrl_type Type;
+		public v4l2_ctrl_flags Flags;
+		public List<Tuple<Int32, String>> MenuItems;        // (menu value, name)
 	}
 }
