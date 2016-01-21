@@ -49,6 +49,25 @@ namespace Video4Linux.Analog
 		VerticalFlip     = 0x00980000 | 0x900 + 21,
 		HorizontalCenter = 0x00980000 | 0x900 + 22,
 		VerticalCenter   = 0x00980000 | 0x900 + 23,
-		LastP1           = 0x00980000 | 0x900 + 24
+		LastP1           = 0x00980000 | 0x900 + 24,
+		
+		//Camera Control
+		ExposureAuto         = 0x009a0000 | 0x900 + 1,
+		ExposureAbsolute     = 0x009a0000 | 0x900 + 2,
+		ExposureAutoPriority = 0x009a0000 | 0x900 + 3,
+		PanRelative          = 0x009a0000 | 0x900 + 4,
+		TiltRelative         = 0x009a0000 | 0x900 + 5,
+		PanReset             = 0x009a0000 | 0x900 + 6,
+		TiltReset            = 0x009a0000 | 0x900 + 7,
+		PanAbsolute          = 0x009a0000 | 0x900 + 8,
+		TiltAbsolute         = 0x009a0000 | 0x900 + 9,
+		FocusAbsolute        = 0x009a0000 | 0x900 + 10,
+		FocusRelative        = 0x009a0000 | 0x900 + 11,
+		FocusAuto            = 0x009a0000 | 0x900 + 12,
+		ZoomAbsolute         = 0x009a0000 | 0x900 + 13,
+		ZoomRelative         = 0x009a0000 | 0x900 + 14,
+		ZoomContinuous       = 0x009a0000 | 0x900 + 15,
+		IrisAbsolute         = 0x009a0000 | 0x900 + 17,
+		IrisRelative         = 0x009a0000 | 0x900 + 18,
 	}
 }
