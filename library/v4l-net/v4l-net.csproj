@@ -156,6 +156,7 @@
     <Compile Include="Analog\Video\VideoCaptureFormat.cs" />
     <Compile Include="Analog\Video\VideoFormat.cs" />
     <Compile Include="Analog\Video\VideoOutputFormat.cs" />
+    <Compile Include="Core\IOControlException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\IOControl.cs" />
     <Compile Include="Core\SearchableList.cs" />
