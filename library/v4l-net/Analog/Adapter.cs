@@ -264,7 +264,7 @@ namespace Video4Linux.Analog {
             v4l2_control cur = new v4l2_control();
             cur.id = (uint)ctrl;
             int ret = ioControl.GetControl(ref cur);
-            if(ret < 0) { throw new IOControlException("VIDIOC_G_CTRL", ret); }
+            if(ret < 0) { throw new Exception("VIDIOC_G_CTRL: " + ret.ToString()); }
 
             return cur.value;
         }
@@ -274,36 +274,35 @@ namespace Video4Linux.Analog {
             cur.id = (uint)ctrl;
             cur.value = value;
             int ret = ioControl.SetControl(ref cur);
-            if(ret < 0) { throw new IOControlException("VIDIOC_S_CTRL", ret); }
+            if(ret < 0) { throw new Exception("VIDIOC_S_CTRL: " + ret.ToString()); }
         }
 
         public DeviceControl QueryControl(Control ctrl) {
             v4l2_queryctrl query = new v4l2_queryctrl();
             query.id = (uint)ctrl;
             int ret = ioControl.QueryControl(ref query);
-            if(ret < 0) { throw new IOControlException("VIDIOC_QUERYCTRL", ret); }
+            if(ret < 0) { throw new Exception("VIDIOC_QUERYCTRL: " + ret.ToString()); }
             DeviceControl control = new DeviceControl() {
                 Id = ctrl,
                 Name = query.name,
                 Min = query.minimum,
                 Max = query.maximum,
                 Step = query.step,
-                Default = query.step,
+                Default = query.default_value,
                 Type = query.type,
                 Flags = query.flags,
             };
+            control.Value = GetControlValue(ctrl);
             if(control.Type == v4l2_ctrl_type.Menu || control.Type == v4l2_ctrl_type.IntegerMenu) {
                 v4l2_querymenu qmenu = new v4l2_querymenu();
                 qmenu.id = (uint)ctrl;
                 control.MenuItems = new List<Tuple<int, string>>();
-                for(int i = control.Min; i < control.Max; i++) {
+                for(int i = control.Min; i <= control.Max; i++) {
                     qmenu.index = (uint)i;
+                    //Console.WriteLine("qmenu.index={0}", qmenu.index);
                     if(ioControl.QueryMenu(ref qmenu) != 0) { continue; }
-                    if(control.Type == v4l2_ctrl_type.Menu) {
-                        control.MenuItems.Add(new Tuple<int, string>(i, qmenu.name));
-                    } else {
-                        control.MenuItems.Add(new Tuple<int, string>(i, qmenu.value.ToString()));
-                    }
+                    //Console.WriteLine("MenuItem: {0}", qmenu.name);
+                    control.MenuItems.Add(new Tuple<int, string>(i, qmenu.name));
                 }
             }
             return control;

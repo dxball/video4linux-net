@@ -45,18 +45,18 @@ namespace Video4Linux.Analog.Kernel {
         public UInt32[] reserved;
     }
 
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct v4l2_querymenu {
-        [FieldOffset(0)]
+        //[FieldOffset(0)]
         public UInt32 id;
-        [FieldOffset(4)]
+        //[FieldOffset(4)]
         public UInt32 index;
-        [FieldOffset(8)]
+        //[FieldOffset(8)]
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public String name;
-        [FieldOffset(8)]
-        public Int64 value;
-        [FieldOffset(40)]
+        //[FieldOffset(8)]
+        //public Int64 value;
+        //[FieldOffset(40)]
         public UInt32 reserved;
     }
 }
